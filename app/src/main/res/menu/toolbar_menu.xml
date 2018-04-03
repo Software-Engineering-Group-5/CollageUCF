@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/profile" android:title="@string/menu_profile"></item>
+    <item android:id="@+id/following" android:title="@string/menu_following"></item>
+    <item android:id="@+id/password" android:title="@string/menu_password_reset"></item>
+    <item android:id="@+id/logout" android:title="@string/menu_logout"></item>
+</menu>
