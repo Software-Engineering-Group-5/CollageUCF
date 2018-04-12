@@ -73,22 +73,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Set main screen to activity_main
         setContentView(R.layout.activity_main);
 
+
+        // Setting up the top toolbar and defaulting to Home
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Collage UCF");
         toolbar.setSubtitle("Home");
         setSupportActionBar(toolbar);
 
-        //Compatibility checking
+        // Compatibility checking
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             toolbar.setElevation(10.f);
         }
 
+        // Creating bottom navigation buttons and on click listener
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //setTitle("Home");
+        // Sets the main page to Home after login.
+        // setTitle("Home");
         Home fragment = new Home();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content, fragment, "FragmentName");
@@ -96,12 +101,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    // Creates top right drop down menu.
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
+    // Menu items for top right drop down.
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {

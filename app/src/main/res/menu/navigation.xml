@@ -7,7 +7,7 @@
         android:title="@string/title_home" />
     <item
         android:id="@+id/navigation_library"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/library_icon"
         android:title="@string/title_library" />
 
     <item
@@ -17,12 +17,12 @@
 
     <item
         android:id="@+id/navigation_upload"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/upload_icon"
         android:title="@string/title_upload" />
 
     <item
         android:id="@+id/navigation_collage"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/collage_icon"
         android:title="@string/title_collage" />
 
 </menu>
