@@ -135,6 +135,8 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
         brightnessFinal = brightness;
         Filter myFilter = new Filter();
         myFilter.addSubFilter(new BrightnessSubFilter(brightness));
+        //below, and for the following methods, should filteredImage be the argument 
+        //of processFilter instead of finalImage?
         imagePreview.setImageBitmap(myFilter.processFilter(finalImage.copy(Bitmap.Config.ARGB_8888, true)));
     }
 
