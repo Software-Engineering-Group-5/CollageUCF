@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.content.Intent;
+import android.widget.Button;
+
 
 
 /**
@@ -23,7 +26,23 @@ public class UpLoad extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_up_load, container, false);
+        View thisView = inflater.inflate(R.layout.fragment_up_load, container, false);
+        Button btn1 = (Button) thisView
+                .findViewById(R.id.button);
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent intent = new Intent(getActivity(), EditPhoto.class);
+                getActivity().startActivity(intent);
+
+            }
+        });
+
+        return thisView;
     }
+
 
 }
