@@ -47,7 +47,7 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
 
     public static final int SELECT_GALLERY_IMAGE = 101;
 
-    //Current crash caused by image preview
+
     @BindView(R.id.image_preview)
     ImageView imagePreview;
 
@@ -337,45 +337,3 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
         startActivity(intent);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*Import filters and use
-
-// get the filter pack
-List<filter> filters = FilterPack.getFilterPack(getActivity());
-
-for (Filter filter : filters) {
-        ThumbnailItem item = new ThumbnailItem();
-        item.image = thumbImage;
-        item.filter = filter;
-        item.filterName = filter.getName();
-        ThumbnailsManager.addThumb(tI);
-}
-
-// Accessing single filter...
-Bitmap bitmap = your_bitmap_;
-Filter clarendon = FilterPack.getClarendon();
-// apply filter
-imagePreview.setImageBitmap(filter.processFilter(bitmap));
- */
