@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_library:
                     //setTitle("Library");
                     toolbar.setSubtitle("Library");
-                    Library fragment2 = new  Library();
+                    Library fragment2 = new  Library().setDynamoDBMapper(dynamoDBMapper);
                     android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction2.replace(R.id.content, fragment2, "FragmentName");
                     fragmentTransaction2.commit();
