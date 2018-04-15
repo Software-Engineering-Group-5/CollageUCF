@@ -6,10 +6,26 @@
     tools:context=".Library">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/library_list"
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/title_library" />
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_10"
+        android:paddingTop="@dimen/padding_10">
+
+        <TextView
+            android:id="@+id/library_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_library" />
+
+        <ImageView
+            android:id="@+id/library_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </FrameLayout>

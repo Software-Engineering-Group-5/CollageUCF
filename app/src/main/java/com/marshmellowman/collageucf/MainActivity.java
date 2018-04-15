@@ -14,13 +14,18 @@ import android.widget.Toast;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.s3.AmazonS3Client;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
     DynamoDBMapper dynamoDBMapper;
+    TransferUtility transferUtility;
+    AmazonS3Client s3;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -39,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_library:
                     //setTitle("Library");
                     toolbar.setSubtitle("Library");
-                    Library fragment2 = new  Library().setDynamoDBMapper(dynamoDBMapper);
+                    Library fragment2 = new  Library()
+                            .setDynamoDBMapper(dynamoDBMapper)
+                            .setS3Client(s3);
                     android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction2.replace(R.id.content, fragment2, "FragmentName");
                     fragmentTransaction2.commit();
@@ -113,6 +120,14 @@ public class MainActivity extends AppCompatActivity {
                 .dynamoDBClient(dynamoDBClient)
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                 .build();
+
+        this.s3 = new AmazonS3Client(AWSMobileClient.getInstance().getCredentialsProvider());
+
+        this.transferUtility = TransferUtility.builder()
+                        .context(getApplicationContext())
+                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                        .s3Client(s3)
+                        .build();
     }
 
     @Override
