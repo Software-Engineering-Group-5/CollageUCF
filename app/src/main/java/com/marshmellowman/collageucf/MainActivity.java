@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     DynamoDBMapper dynamoDBMapper;
     TransferUtility transferUtility;
     AmazonS3Client s3;
+    final String bucket = "collageucf-userfiles-mobilehub-199851075";
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -62,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_upload:
                     //setTitle("Up-Load");
                     toolbar.setSubtitle("Up-Load");
-                    UpLoad fragment4 = new UpLoad();
+                    UpLoad fragment4 = new UpLoad()
+                            .setS3Client(s3);
                     android.support.v4.app.FragmentTransaction fragmentTransaction4 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction4.replace(R.id.content, fragment4, "FragmentName");
                     fragmentTransaction4.commit();
@@ -113,7 +115,10 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         // Initiate AWS
-        AWSMobileClient.getInstance().initialize(this).execute();
+        AWSMobileClient
+                .getInstance()
+                .initialize(this)
+                .execute();
 
         AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
         this.dynamoDBMapper = DynamoDBMapper.builder()
@@ -124,10 +129,11 @@ public class MainActivity extends AppCompatActivity {
         this.s3 = new AmazonS3Client(AWSMobileClient.getInstance().getCredentialsProvider());
 
         this.transferUtility = TransferUtility.builder()
-                        .context(getApplicationContext())
-                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                        .s3Client(s3)
-                        .build();
+                .context(getApplicationContext())
+                .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                .s3Client(s3)
+                .defaultBucket(bucket)
+                .build();
     }
 
     @Override

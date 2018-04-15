@@ -37,6 +37,8 @@
             android:name=".EditPhoto"
             android:label="@string/title_activity_edit_photo"
             android:theme="@style/AppTheme" />
+
+        <service android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService" android:enabled="true" />
     </application>
 
 </manifest>
