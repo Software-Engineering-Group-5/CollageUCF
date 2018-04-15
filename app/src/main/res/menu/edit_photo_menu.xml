@@ -1,7 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".EditPhoto">
+    tools:context=".EditPhoto"
+    app:theme="@style/PhotoEditorTheme">
     <item
         android:id="@+id/action_open"
         android:orderInCategory="100"

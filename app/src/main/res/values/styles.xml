@@ -14,6 +14,13 @@
         <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="PhotoEditorTheme">
+        <item name="android:textColorPrimary">@color/colorPrimary</item>S
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:actionMenuTextColor">@color/colorPrimary</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

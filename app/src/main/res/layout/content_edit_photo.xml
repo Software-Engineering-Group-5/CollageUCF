@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".EditPhoto"
-    tools:showIn="@layout/activity_edit_photo">
+    tools:showIn="@layout/activity_edit_photo"
+    app:theme="@style/PhotoEditorTheme">
 
     <ImageView
         android:id="@+id/image_preview"

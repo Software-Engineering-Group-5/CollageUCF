@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/margin_horizontal"
     android:paddingRight="@dimen/margin_horizontal"
+    android:background="@color/colorPrimaryDark"
     tools:context=".EditImageFragment">
 
     <LinearLayout
@@ -19,7 +20,8 @@
         <TextView
             android:layout_width="@dimen/lbl_edit_image_control"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_brightness" />
+            android:text="@string/lbl_brightness"
+            android:textColor="@color/colorPrimary"/>
 
         <SeekBar
             android:id="@+id/seekbar_brightness"
@@ -39,7 +41,8 @@
         <TextView
             android:layout_width="@dimen/lbl_edit_image_control"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_contrast" />
+            android:text="@string/lbl_contrast"
+            android:textColor="@color/colorPrimary"/>
 
         <SeekBar
             android:id="@+id/seekbar_contrast"
@@ -58,7 +61,8 @@
         <TextView
             android:layout_width="@dimen/lbl_edit_image_control"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_saturation" />
+            android:text="@string/lbl_saturation"
+            android:textColor="@color/colorPrimary"/>
 
         <SeekBar
             android:id="@+id/seekbar_saturation"
