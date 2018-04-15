@@ -84,7 +84,7 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_edit_photo);
         ButterKnife.bind(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);

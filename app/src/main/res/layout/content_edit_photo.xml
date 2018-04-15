@@ -7,8 +7,8 @@
     android:background="@android:color/white"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.marshmellowman.collageucf.EditPhoto"
-    tools:showIn="@layout/activity_main">
+    tools:context=".EditPhoto"
+    tools:showIn="@layout/activity_edit_photo">
 
     <ImageView
         android:id="@+id/image_preview"
@@ -16,7 +16,7 @@
         android:layout_height="360dp"
         android:scaleType="centerCrop" />
 
-    <info.androidhive.imagefilters.utils.NonSwipeableViewPager
+    <com.marshmellowman.collageucf.utils.NonSwipeableViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="120dp"
