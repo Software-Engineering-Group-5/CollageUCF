@@ -43,7 +43,7 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
 
     private static final String TAG = EditPhoto.class.getSimpleName();
 
-    public static final String IMAGE_NAME = "dog.jpg";
+    public static final String IMAGE_NAME = "upload.png";
 
     public static final int SELECT_GALLERY_IMAGE = 101;
 
@@ -93,6 +93,14 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
         getSupportActionBar().setTitle(getString(R.string.activity_title_main));
 
         loadImage();
+
+        //Able to click on image to upload new one
+        ImageView img = (ImageView) findViewById(R.id.image_preview);
+        img.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                openImageFromGallery();
+            }
+        });
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
@@ -265,6 +273,10 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
 
             // render selected image thumbnails
             filtersListFragment.prepareThumbnail(originalImage);
+
+            //Disables ability to click on image to upload
+            ImageView img = (ImageView) findViewById(R.id.image_preview);
+            img.setOnClickListener(null);
         }
     }
 
@@ -337,3 +349,44 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
         startActivity(intent);
     }
 }
+
+
+//Saves image to gallery
+/*
+private void saveImageToGallery() {
+        Dexter.withActivity(this).withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            final String path = BitmapUtils.insertImage(getContentResolver(), finalImage, System.currentTimeMillis() + "_profile.jpg", null);
+                            if (!TextUtils.isEmpty(path)) {
+                                Snackbar snackbar = Snackbar
+                                        .make(coordinatorLayout, "Image saved to gallery!", Snackbar.LENGTH_LONG)
+                                        .setAction("OPEN", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                openImage(path);
+                                            }
+                                        });
+
+                                snackbar.show();
+                            } else {
+                                Snackbar snackbar = Snackbar
+                                        .make(coordinatorLayout, "Unable to save image!", Snackbar.LENGTH_LONG);
+
+                                snackbar.show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Permissions are not granted!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+
+    }
+ */

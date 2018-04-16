@@ -14,6 +14,7 @@
         android:id="@+id/image_preview"
         android:layout_width="match_parent"
         android:layout_height="360dp"
+        android:clickable="true"
         android:scaleType="centerCrop" />
 
     <com.marshmellowman.collageucf.utils.NonSwipeableViewPager
