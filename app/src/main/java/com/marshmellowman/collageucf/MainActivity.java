@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.amazonaws.mobile.auth.core.IdentityHandler;
 import com.amazonaws.mobile.auth.core.IdentityManager;
+import com.amazonaws.mobile.auth.ui.SignInUI;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.AWSStartupHandler;
 import com.amazonaws.mobile.client.AWSStartupResult;
@@ -173,16 +174,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.password:
                 //Toast.makeText(this, "Password Reset", Toast.LENGTH_SHORT).show();
                 toolbar.setSubtitle("Password Reset");
-                Password_Reset fragment3 = new Password_Reset();
+                //Password_Reset fragment3 = new Password_Reset();
                 android.support.v4.app.FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction3.replace(R.id.content, fragment3, "FragmentName");
+                //fragmentTransaction3.replace(R.id.content, fragment3, "FragmentName");
                 fragmentTransaction3.commit();
                 return true;
             case R.id.logout:
-                //Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
-                Intent myIntent = new Intent(MainActivity.this , LoginActivity.class);
-                MainActivity.this.startActivity(myIntent);
-                return true;
+                // Add a call to initialize AWSMobileClient
+                AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
+                    @Override
+                    public void onComplete(AWSStartupResult awsStartupResult) {
+                        SignInUI signin = (SignInUI) AWSMobileClient.getInstance().getClient(MainActivity.this, SignInUI.class);
+                        signin.login(MainActivity.this, LoginActivity.class).execute();
+                    }
+                }).execute();
         }
         return false;
     }
