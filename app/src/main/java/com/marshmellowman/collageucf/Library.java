@@ -66,15 +66,15 @@ public class Library extends Fragment {
         new Thread(new Runnable() {
             public void run() {
                 // Get a list of users from the database
-                List<UserDBDO> list = dynamoDBMapper.scan(UserDBDO.class, new DynamoDBScanExpression());
+                List<PostDBDO> list = dynamoDBMapper.scan(PostDBDO.class, new DynamoDBScanExpression());
 
                 // Construct the message to the handler
                 // Note that the message stores an Object, so it could be literally anything
                 Message msg = handler.obtainMessage();
                 msg.what = DB_TEXT;
                 msg.obj = new String();
-                for (UserDBDO u : list)
-                    msg.obj = msg.obj + u.getName() + "\n";
+                for (PostDBDO u : list)
+                    msg.obj = msg.obj + u.getImageURL() + "\n";
 
                 handler.sendMessage(msg);
             }
