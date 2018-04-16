@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.marshmellowman.collageucf"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -42,7 +42,15 @@ dependencies {
 
     // AWS
     implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.6.+@aar') { transitive = true; }
+    // DynamoDB
     implementation 'com.amazonaws:aws-android-sdk-ddb-mapper:2.6.+'
+    // S3
     implementation 'com.amazonaws:aws-android-sdk-s3:2.6.+'
-    implementation 'com.amazonaws:aws-android-sdk-cognito:2.6.+'
+    // Cognito UserPools for SignIn
+    implementation 'com.android.support:support-v4:27.+'
+    implementation ('com.amazonaws:aws-android-sdk-auth-userpools:2.6.+@aar') { transitive = true }
+    // Sign in UI Library
+    implementation 'com.android.support:appcompat-v7:27.+'
+    implementation ('com.amazonaws:aws-android-sdk-auth-ui:2.6.+@aar') { transitive = true }
+
 }

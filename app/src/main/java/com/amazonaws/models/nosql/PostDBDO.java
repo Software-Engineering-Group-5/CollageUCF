@@ -18,7 +18,7 @@ public class PostDBDO {
     private String _imageURL;
     private Double _numberOfLikes;
     private Boolean _publicPrivate;
-    private String _timeUploaded;
+    private Double _timeUploaded;
     private Double _uploader;
 
     @DynamoDBHashKey(attributeName = "PostID")
@@ -55,11 +55,11 @@ public class PostDBDO {
         this._publicPrivate = _publicPrivate;
     }
     @DynamoDBAttribute(attributeName = "TimeUploaded")
-    public String getTimeUploaded() {
+    public Double getTimeUploaded() {
         return _timeUploaded;
     }
 
-    public void setTimeUploaded(final String _timeUploaded) {
+    public void setTimeUploaded(final Double _timeUploaded) {
         this._timeUploaded = _timeUploaded;
     }
     @DynamoDBIndexHashKey(attributeName = "Uploader", globalSecondaryIndexName = "Uploader")

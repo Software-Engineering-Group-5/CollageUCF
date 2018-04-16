@@ -12,6 +12,14 @@
   "IdentityManager": {
     "Default": {}
   },
+  "CognitoUserPool": {
+    "Default": {
+      "PoolId": "us-east-1_SPaMRsk3m",
+      "AppClientId": "5tn50pk94bbdo7q9j0ljr71cb2",
+      "AppClientSecret": "2pl91i0eos2akmn0q4vde7riqbgjfk5cdh9v7dke3jtuukn9m8v",
+      "Region": "us-east-1"
+    }
+  },
   "S3TransferUtility": {
     "Default": {
       "Bucket": "collageucf-userfiles-mobilehub-199851075",

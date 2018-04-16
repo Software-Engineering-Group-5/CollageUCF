@@ -7,12 +7,17 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobile.auth.core.IdentityHandler;
+import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.mobile.client.AWSStartupResult;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -46,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     //setTitle("Library");
                     toolbar.setSubtitle("Library");
                     Library fragment2 = new  Library()
-                            .setDynamoDBMapper(dynamoDBMapper)
-                            .setS3Client(s3);
+                            .setDynamoDBMapper(dynamoDBMapper);
                     android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction2.replace(R.id.content, fragment2, "FragmentName");
                     fragmentTransaction2.commit();
@@ -64,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     //setTitle("Up-Load");
                     toolbar.setSubtitle("Up-Load");
                     UpLoad fragment4 = new UpLoad()
-                            .setS3Client(s3);
+                            .setDynamoDBMapper(dynamoDBMapper)
+                            .setS3Client(s3)
+                            .setTransferUtility(transferUtility);
                     android.support.v4.app.FragmentTransaction fragmentTransaction4 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction4.replace(R.id.content, fragment4, "FragmentName");
                     fragmentTransaction4.commit();
