@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
                     @Override
                     public void onComplete(AWSStartupResult awsStartupResult) {
+                        // Log out first then launch the sign in page again.
                         IdentityManager.getDefaultIdentityManager().signOut();
                         SignInUI signin = (SignInUI) AWSMobileClient.getInstance().getClient(MainActivity.this, SignInUI.class);
                         signin.login(MainActivity.this, LoginActivity.class).execute();

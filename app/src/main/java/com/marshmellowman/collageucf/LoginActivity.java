@@ -3,6 +3,7 @@ package com.marshmellowman.collageucf;
 import android.app.Activity;
 import android.os.Bundle;
 
+
 import com.amazonaws.mobile.auth.ui.SignInUI;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.AWSStartupHandler;
