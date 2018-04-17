@@ -133,8 +133,8 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
         filteredImage = originalImage.copy(Bitmap.Config.ARGB_8888, true);
         // preview filtered image
         imagePreview.setImageBitmap(filter.processFilter(filteredImage));
-
-        finalImage = filteredImage.copy(Bitmap.Config.ARGB_8888, true);
+        filteredImage=filter.processFilter(filteredImage);
+        finalImage = filteredImage;
     }
 
     @Override

@@ -1,15 +1,22 @@
 package com.zomato.photofilters;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.zomato.photofilters.geometry.Point;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.MirrorSubfilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ReflectionSubfilter;
 import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubfilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ShadingSubfilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ToneCurveSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.VignetteSubfilter;
+import com.zomato.photofilters.imageprocessors.subfilters.BlurSubfilter;
+import com.zomato.photofilters.imageprocessors.subfilters.RoundCornersSubfilter;
+import com.zomato.photofilters.imageprocessors.subfilters.DogFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +56,18 @@ public final class FilterPack {
         filters.add(getCruzFilter(context));
         filters.add(getMetropolis(context));
         filters.add(getAudreyFilter(context));
+        filters.add(getBlueShadingFilter(context));
+        filters.add(getGreenShadingFilter(context));
+        filters.add(getRedShadingFilter(context));
+        filters.add(getYellowShadingFilter(context));
+    //    filters.add(getPurpleShadingFilter(context));
+        filters.add(getCyanShadingFilter(context));
+        filters.add(getMagentaShadingFilter(context));
+        filters.add(getNegativeFilter(context));
+ //       filters.add(getBlurFilter(context));
+        filters.add(getRoundCornerFilter(context));
+        filters.add(getReflectionFilter(context));
+        filters.add(getDogFilter(context));
         return filters;
     }
 
@@ -343,4 +362,80 @@ public final class FilterPack {
         filter.addSubFilter(new ToneCurveSubFilter(null, redKnots, greenKnots, blueKnots));
         return filter;
     }
+
+    public static Filter getNegativeFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName(context.getString(R.string.negative));
+        filter.addSubFilter(new MirrorSubfilter());
+        return filter;
+    }
+
+    public static Filter getBlurFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName(context.getString(R.string.blur));
+        filter.addSubFilter(new BlurSubfilter());
+        return filter;
+    }
+    public static Filter getRoundCornerFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName(context.getString(R.string.roundCorner));
+        filter.addSubFilter(new RoundCornersSubfilter());
+        return filter;
+    }
+    public static Filter getReflectionFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName(context.getString(R.string.reflection));
+        filter.addSubFilter(new ReflectionSubfilter());
+        return filter;
+    }
+    public static Filter getCyanShadingFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName("Cyan Tint");
+        filter.addSubFilter(new ShadingSubfilter(Color.CYAN));
+        return filter;
+    }
+
+    public static Filter getMagentaShadingFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName("Cyan Tint");
+        filter.addSubFilter(new ShadingSubfilter(Color.MAGENTA));
+        return filter;
+    }
+    public static Filter getYellowShadingFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName("Yellow Tint");
+        filter.addSubFilter(new ShadingSubfilter(Color.YELLOW));
+        return filter;
+    }
+    public static Filter getGreenShadingFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName("Green Tint");
+        filter.addSubFilter(new ShadingSubfilter(Color.GREEN));
+        return filter;
+    }
+    public static Filter getBlueShadingFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName("Blue Tint");
+        filter.addSubFilter(new ShadingSubfilter(Color.BLUE));
+        return filter;
+    }
+    public static Filter getRedShadingFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName("Red Tint");
+        filter.addSubFilter(new ShadingSubfilter(Color.RED));
+        return filter;
+    }
+    public static Filter getPurpleShadingFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName("Purple Tint");
+        filter.addSubFilter(new ShadingSubfilter(0x7D26CD));
+        return filter;
+    }
+    public static Filter getDogFilter(Context context){
+        Filter filter = new Filter();
+        filter.setName("Dog");
+        filter.addSubFilter(new DogFilter(context));
+        return filter;
+    }
 }
+
