@@ -1,8 +1,10 @@
 package com.marshmellowman.collageucf;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -13,16 +15,33 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.AWSAbstractCognitoIdentityProvider;
+import com.amazonaws.auth.AWSCognitoIdentityProvider;
 import com.amazonaws.mobile.auth.core.IdentityHandler;
 import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.amazonaws.mobile.auth.ui.SignInUI;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.AWSStartupHandler;
 import com.amazonaws.mobile.client.AWSStartupResult;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.tokens.CognitoUserToken;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.models.nosql.PostDBDO;
+import com.amazonaws.models.nosql.UserDBDO;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.s3.AmazonS3Client;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     TransferUtility transferUtility;
     AmazonS3Client s3;
     final String bucket = "collageucf-userfiles-mobilehub-199851075";
+
+    public List<UserDBDO> usersAll;
+    public List<UserDBDO> usersFollowing;
+    public String currentUser;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -51,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_library:
                     //setTitle("Library");
                     toolbar.setSubtitle("Library");
-                    Library fragment2 = new  Library()
-                            .setDynamoDBMapper(dynamoDBMapper);
+                    Library fragment2 = new  Library();
                     android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction2.replace(R.id.content, fragment2, "FragmentName");
                     fragmentTransaction2.commit();
@@ -68,10 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_upload:
                     //setTitle("Up-Load");
                     toolbar.setSubtitle("Up-Load");
-                    UpLoad fragment4 = new UpLoad()
-                            .setDynamoDBMapper(dynamoDBMapper)
-                            .setS3Client(s3)
-                            .setTransferUtility(transferUtility);
+                    UpLoad fragment4 = new UpLoad();
                     android.support.v4.app.FragmentTransaction fragmentTransaction4 = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction4.replace(R.id.content, fragment4, "FragmentName");
                     fragmentTransaction4.commit();
@@ -124,19 +143,42 @@ public class MainActivity extends AppCompatActivity {
         // Initiate AWS
         // Initiate AWS managers
         AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
-        this.dynamoDBMapper = DynamoDBMapper.builder()
+        AppInfo.getInstance().setDynamoDBMapper(DynamoDBMapper.builder()
                 .dynamoDBClient(dynamoDBClient)
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-                .build();
+                .build());
+        dynamoDBMapper = AppInfo.getInstance().getDynamoDBMapper();
 
-        this.s3 = new AmazonS3Client(AWSMobileClient.getInstance().getCredentialsProvider());
+        AppInfo.getInstance().setS3(new AmazonS3Client(AWSMobileClient.getInstance().getCredentialsProvider()));
+        s3 = AppInfo.getInstance().getS3();
 
-        this.transferUtility = TransferUtility.builder()
+        AppInfo.getInstance().setTransferUtility(TransferUtility.builder()
                 .context(getApplicationContext())
                 .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                 .s3Client(s3)
                 .defaultBucket(bucket)
-                .build();
+                .build());
+        transferUtility = AppInfo.getInstance().getTransferUtility();
+
+        // Set current user
+        AppInfo.getInstance().setCurrentUser(new CognitoUserPool(getApplicationContext(), AWSMobileClient.getInstance().getConfiguration()).getCurrentUser().getUserId());
+        currentUser = AppInfo.getInstance().getCurrentUser();
+
+        // Fill the list of all users and the following users
+        new Thread(new Runnable() {
+            public void run() {
+                // Get a list of users from the database
+                AppInfo.getInstance().setUsersAll(new ArrayList<>(dynamoDBMapper.scan(UserDBDO.class, new DynamoDBScanExpression())));
+
+                // Get the list of users you are following
+                Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+                eav.put(":val1", new AttributeValue().withS(currentUser));
+                DynamoDBScanExpression exp = new DynamoDBScanExpression()
+                        .withFilterExpression("Follower = :val1")
+                        .withExpressionAttributeValues(eav);
+                AppInfo.getInstance().setUsersFollowing( new ArrayList<>(dynamoDBMapper.scan(UserDBDO.class, exp)));
+            }
+        }).start();
     }
 
     @Override
