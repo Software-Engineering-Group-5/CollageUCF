@@ -41,16 +41,13 @@ public class Library extends Fragment {
         // Required empty public constructor
     }
 
-    public Library setDynamoDBMapper(DynamoDBMapper dynamoDBMapper) {
-        this.dynamoDBMapper = dynamoDBMapper;
-        return this;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View thisView = inflater.inflate(R.layout.fragment_library, container, false);
+
+        dynamoDBMapper = AppInfo.getInstance().getDynamoDBMapper();
 
         // Attempt at a grid of pictures
         ArrayList<Bitmap> array = new ArrayList<>();
