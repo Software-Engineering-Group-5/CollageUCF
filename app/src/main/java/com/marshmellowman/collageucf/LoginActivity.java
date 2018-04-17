@@ -12,7 +12,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        //setContentView(R.layout.activity_login);
 
         // Add a call to initialize AWSMobileClient
         AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
