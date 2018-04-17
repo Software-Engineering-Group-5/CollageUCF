@@ -1,6 +1,7 @@
 package com.marshmellowman.collageucf;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -18,9 +19,10 @@ import android.widget.TextView;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
 import com.amazonaws.models.nosql.PostDBDO;
-import com.amazonaws.models.nosql.UserDBDO;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -52,7 +54,7 @@ public class Library extends Fragment {
 
         // Attempt at a grid of pictures
         ArrayList<Bitmap> array = new ArrayList<>();
-        ArrayAdapter<Bitmap> adapter = new ArrayAdapter<Bitmap>(thisView.getContext(), R.layout.thumbnail_list_item, array);
+        GridAdapter adapter = new GridAdapter(thisView.getContext(), R.layout.library_item, array);
         GridView listView = (GridView) thisView.findViewById(R.id.library_grid);
         listView.setAdapter(adapter);
 
@@ -60,40 +62,38 @@ public class Library extends Fragment {
         // Pass it this view so you can change it below.
         final ViewHandler handler = new ViewHandler(thisView, array, adapter);
 
-        // Create alt Thread to connect to the DB, as it could take forever, who knows?
-        // Send a Message with a string in it to the Handler
-        new Thread(new Runnable() {
-            public void run() {
-                // Get a list of users from the database
-                List<PostDBDO> list = dynamoDBMapper.scan(PostDBDO.class, new DynamoDBScanExpression());
-
-                // Construct the message to the handler
-                // Note that the message stores an Object, so it could be literally anything
-                Message msg = handler.obtainMessage();
-                msg.what = DB_TEXT;
-                msg.obj = new String();
-                for (PostDBDO u : list)
-                    msg.obj = msg.obj + u.getImageURL() + "\n";
-                handler.sendMessage(msg);
-            }
-        }).start();
-
         // Create another thread to download an image
         // Send a Message with a bitmap in it to the Handler
         Thread t2 = new Thread(new Runnable() {
             public void run() {
                 // Get a list of posts from the database
-                List<PostDBDO> list = dynamoDBMapper.scan(PostDBDO.class, new DynamoDBScanExpression());
+                List<PostDBDO> list = new ArrayList<>(dynamoDBMapper.scan(PostDBDO.class, new DynamoDBScanExpression()));
+
+                // Sort the list by Time Uploaded
+                Collections.sort(list, new Comparator<PostDBDO>(){
+                    public int compare(PostDBDO o1, PostDBDO o2){
+                        if(o1.getTimeUploaded() == o2.getTimeUploaded())
+                            return 0;
+                        return o1.getTimeUploaded() > o2.getTimeUploaded() ? -1 : 1;
+                    }
+                });
 
                 // Construct the message to the handler
                 // Note the message now contains a bitmap image
-                Message msg = handler.obtainMessage();
-                msg.what = S3_IMAGE;
+                Message msg;
                 try {
-                    msg.obj = BitmapFactory.decodeStream(new java.net.URL(uri + list.get(0).getImageURL()).openStream());
+                    for (PostDBDO p : list) {
+                        msg = handler.obtainMessage();
+                        msg.what = S3_IMAGE;
+                        msg.obj = BitmapFactory.decodeStream(new java.net.URL(uri + p.getImageURL()).openStream());
+                        handler.sendMessage(msg);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                msg = handler.obtainMessage();
+                msg.what = DB_TEXT;
+                msg.obj = "Loaded!";
                 handler.sendMessage(msg);
             }
         });
@@ -102,7 +102,9 @@ public class Library extends Fragment {
                 Message msg = handler.obtainMessage();
                 msg.what = DB_ERROR;
                 msg.obj = ex;
-                handler.sendMessage(msg);            }
+                handler.sendMessage(msg);
+                ex.printStackTrace();
+            }
         });
         t2.start();
 
@@ -115,9 +117,9 @@ public class Library extends Fragment {
     private static class ViewHandler extends Handler{
         View thisView;
         ArrayList array;
-        ArrayAdapter adapter;
+        GridAdapter adapter;
 
-        ViewHandler(View thisView, ArrayList array, ArrayAdapter adapter) {
+        ViewHandler(View thisView, ArrayList array, GridAdapter adapter) {
             this.thisView = thisView;
             this.array = array;
             this.adapter = adapter;
@@ -128,7 +130,8 @@ public class Library extends Fragment {
                 ((TextView) thisView.findViewById(R.id.library_list)).setText( (String) msg.obj );
             }
             else if (msg.what == S3_IMAGE) {
-                ((ImageView) thisView.findViewById(R.id.library_image)).setImageBitmap( (Bitmap) msg.obj);
+                array.add((Bitmap) msg.obj);
+                adapter.notifyDataSetChanged();
             }
             else if (msg.what == DB_ERROR) {
                 ((TextView) thisView.findViewById(R.id.library_list)).setText( "Problems!" + ((Throwable) msg.obj).getLocalizedMessage() );
@@ -136,4 +139,36 @@ public class Library extends Fragment {
             super.handleMessage(msg);
         }
     };
+
+    /**
+     *  Grid Adapter: how the array of bitmaps gets put into a fancy grid
+     */
+    private class GridAdapter extends ArrayAdapter {
+        private Context context;
+        private int resource;
+        private List list;
+
+        public GridAdapter(Context context, int resource, List objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.resource = resource;
+            this.list = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View currentView;
+
+            if (convertView == null) {
+                currentView = inflater.inflate(resource, null);
+            } else {
+                currentView = (View) convertView;
+            }
+
+            ( (ImageView) currentView.findViewById(R.id.thumbnail)).setImageBitmap( (Bitmap) list.get(position) );
+            return currentView;
+        }
+    }
 }

@@ -122,11 +122,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         // Initiate AWS
-        AWSMobileClient
-                .getInstance()
-                .initialize(this)
-                .execute();
-
+        // Initiate AWS managers
         AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
         this.dynamoDBMapper = DynamoDBMapper.builder()
                 .dynamoDBClient(dynamoDBClient)
