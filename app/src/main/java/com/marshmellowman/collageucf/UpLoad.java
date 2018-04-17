@@ -38,6 +38,8 @@ public class UpLoad extends Fragment {
     TransferUtility transferUtility;
     UploadHandler handler;
 
+    String currentUser;
+
     private static final int GET_FILE_REQUEST_CODE = 42;
     private static final int FILE_PARSE_ERROR = 10;
     private static final int FILE_UPLOAD_BEGIN = 11;
@@ -50,27 +52,16 @@ public class UpLoad extends Fragment {
         // Required empty public constructor
     }
 
-    public UpLoad setDynamoDBMapper(DynamoDBMapper dynamoDBMapper) {
-        this.dynamoDBMapper = dynamoDBMapper;
-        return this;
-    }
-
-    public UpLoad setS3Client(AmazonS3Client s3) {
-        this.s3 = s3;
-        return this;
-    }
-
-    public UpLoad setTransferUtility(TransferUtility transferUtility) {
-        this.transferUtility = transferUtility;
-        return this;
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View thisView = inflater.inflate(R.layout.fragment_up_load, container, false);
+
+        dynamoDBMapper = AppInfo.getInstance().getDynamoDBMapper();
+        transferUtility = AppInfo.getInstance().getTransferUtility();
+        s3 = AppInfo.getInstance().getS3();
+        currentUser = AppInfo.getInstance().getCurrentUser();
 
         handler = new UploadHandler(thisView);
 
@@ -157,7 +148,7 @@ public class UpLoad extends Fragment {
                     public void onStateChanged(int id, TransferState state) {
                         if (state == TransferState.COMPLETED) {
                             // Now add new entry to Post Database
-                            newPostDB((double) hash, filename, 0.0, true, System.currentTimeMillis(), 0.0);
+                            newPostDB((double) hash, filename, 0.0, true, System.currentTimeMillis(), currentUser);
                             file.delete();
                         }
                     }
@@ -190,7 +181,7 @@ public class UpLoad extends Fragment {
             final double numberOfLikes,
             final boolean publicPrivate,
             final double timeUploaded,
-            final double uploader) {
+            final String uploader) {
 
         new Thread(new Runnable() {
             public void run() {
