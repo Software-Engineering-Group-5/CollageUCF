@@ -15,11 +15,11 @@ import java.util.Set;
 
 public class PostDBDO {
     private Double _postID;
+    private Double _timeUploaded;
     private String _imageURL;
     private Double _numberOfLikes;
     private Boolean _publicPrivate;
-    private Double _timeUploaded;
-    private Double _uploader;
+    private String _uploader;
 
     @DynamoDBHashKey(attributeName = "PostID")
     @DynamoDBAttribute(attributeName = "PostID")
@@ -29,6 +29,15 @@ public class PostDBDO {
 
     public void setPostID(final Double _postID) {
         this._postID = _postID;
+    }
+    @DynamoDBRangeKey(attributeName = "TimeUploaded")
+    @DynamoDBAttribute(attributeName = "TimeUploaded")
+    public Double getTimeUploaded() {
+        return _timeUploaded;
+    }
+
+    public void setTimeUploaded(final Double _timeUploaded) {
+        this._timeUploaded = _timeUploaded;
     }
     @DynamoDBAttribute(attributeName = "ImageURL")
     public String getImageURL() {
@@ -54,20 +63,12 @@ public class PostDBDO {
     public void setPublicPrivate(final Boolean _publicPrivate) {
         this._publicPrivate = _publicPrivate;
     }
-    @DynamoDBAttribute(attributeName = "TimeUploaded")
-    public Double getTimeUploaded() {
-        return _timeUploaded;
-    }
-
-    public void setTimeUploaded(final Double _timeUploaded) {
-        this._timeUploaded = _timeUploaded;
-    }
-    @DynamoDBIndexHashKey(attributeName = "Uploader", globalSecondaryIndexName = "Uploader")
-    public Double getUploader() {
+    @DynamoDBAttribute(attributeName = "Uploader")
+    public String getUploader() {
         return _uploader;
     }
 
-    public void setUploader(final Double _uploader) {
+    public void setUploader(final String _uploader) {
         this._uploader = _uploader;
     }
 
