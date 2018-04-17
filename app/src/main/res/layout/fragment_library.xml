@@ -7,30 +7,48 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <GridView
+        android:id="@+id/library_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:verticalSpacing="10dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="spacingWidth"
+        android:columnWidth="90dp"
+        android:gravity="center"/>
 
     <LinearLayout
+        android:id="@+id/library_image_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:backgroundTintMode="add">
 
-        <TextView
-            android:id="@+id/library_list"
+        <ImageView
+            android:id="@+id/library_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:paddingBottom="10dp"
-            android:text="" />
+            android:layout_weight="1"/>
 
-        <GridView
-            android:id="@+id/library_grid"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:verticalSpacing="10dp"
-            android:numColumns="auto_fit"
-            android:stretchMode="spacingWidth"
-            android:columnWidth="90dp"
-            android:gravity="center"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/library_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/library_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Like"/>
+        </LinearLayout>
 
     </LinearLayout>
 
