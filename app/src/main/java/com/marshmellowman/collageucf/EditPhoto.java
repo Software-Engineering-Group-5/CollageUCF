@@ -124,7 +124,6 @@ public class EditPhoto extends AppCompatActivity implements FiltersListFragment.
     }
 
 
-    //Current crash caused by one of the immediate following functions using imagePreview
     @Override
     public void onFilterSelected(Filter filter) {
         // reset image controls
