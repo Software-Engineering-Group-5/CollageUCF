@@ -397,7 +397,7 @@ public final class FilterPack {
 
     public static Filter getMagentaShadingFilter(Context context){
         Filter filter = new Filter();
-        filter.setName("Cyan Tint");
+        filter.setName("Magenta Tint");
         filter.addSubFilter(new ShadingSubfilter(Color.MAGENTA));
         return filter;
     }
