@@ -20,4 +20,6 @@
     <string name="blur">Blur</string>
     <string name="roundCorner">Rounded Corners</string>
     <string name="reflection">Add Reflection</string>
+    <string name="brightLight">Blinding Light</string>
+    <string name="rainfall">Rainfall</string>
 </resources>

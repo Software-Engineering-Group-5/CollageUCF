@@ -45,6 +45,7 @@ public final class FilterPack {
         filters.add(getOldManFilter(context));
         filters.add(getMarsFilter(context));
         filters.add(getRiseFilter(context));
+        filters.add(getRainfallFilter(context));
         filters.add(getAprilFilter(context));
         filters.add(getAmazonFilter(context));
         filters.add(getStarLitFilter(context));
@@ -56,6 +57,7 @@ public final class FilterPack {
         filters.add(getCruzFilter(context));
         filters.add(getMetropolis(context));
         filters.add(getAudreyFilter(context));
+        filters.add(getBrightLightFilter(context));
         filters.add(getBlueShadingFilter(context));
         filters.add(getGreenShadingFilter(context));
         filters.add(getRedShadingFilter(context));
@@ -435,6 +437,36 @@ public final class FilterPack {
         Filter filter = new Filter();
         filter.setName("Dog");
         filter.addSubFilter(new DogFilter(context));
+        return filter;
+    }
+
+    public static Filter getBrightLightFilter(Context context) {
+        Point[] greenKnots;
+        greenKnots = new Point[3];
+        greenKnots[0] = new Point(0, 0);
+        greenKnots[1] = new Point(150, 150);
+        greenKnots[2] = new Point(255, 255);
+
+        Filter filter = new Filter(context.getString(R.string.brightLight));
+        filter.addSubFilter(new ContrastSubFilter(0.7f));
+        filter.addSubFilter(new BrightnessSubFilter(80));
+        filter.addSubFilter(new VignetteSubfilter(context, 120));
+        filter.addSubFilter(new ToneCurveSubFilter(null, null, greenKnots, null));
+        return filter;
+    }
+
+    public static Filter getRainfallFilter(Context context) {
+        Point[] greenKnots;
+        greenKnots = new Point[3];
+        greenKnots[0] = new Point(0, 0);
+        greenKnots[1] = new Point(125, 70);
+        greenKnots[2] = new Point(255, 255);
+
+        Filter filter = new Filter(context.getString(R.string.rainfall));
+        filter.addSubFilter(new ContrastSubFilter(1.2f));
+        filter.addSubFilter(new BrightnessSubFilter(45));
+        filter.addSubFilter(new VignetteSubfilter(context, 120));
+        filter.addSubFilter(new ToneCurveSubFilter(null, null, greenKnots, null));
         return filter;
     }
 }
