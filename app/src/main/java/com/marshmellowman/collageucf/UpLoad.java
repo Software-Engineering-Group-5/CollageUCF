@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -216,16 +217,16 @@ public class UpLoad extends Fragment {
 
         public void handleMessage(Message msg) {
             if(msg.what==FILE_PARSE_ERROR){
-                ((TextView) thisView.findViewById(R.id.upload_status)).setText( (String) msg.obj );
+                Toast.makeText(thisView.getContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
             }
-            else if(msg.what==FILE_UPLOAD_BEGIN){
-                ((TextView)thisView.findViewById(R.id.upload_status)).setText( "" );
+            else if(msg.what==FILE_UPLOAD_BEGIN) {
+
             }
             else if(msg.what==FILE_UPLOAD_SUCCESS){
-                ((TextView) thisView.findViewById(R.id.upload_status)).setText( (String) msg.obj );
+                Toast.makeText(thisView.getContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
             }
             else if(msg.what==FILE_UPLOAD_FAILURE){
-                ((TextView) thisView.findViewById(R.id.upload_status)).setText( (String) msg.obj );
+                Toast.makeText(thisView.getContext(), (String) msg.obj, Toast.LENGTH_SHORT).show();
             }
             super.handleMessage(msg);
         }
